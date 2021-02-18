@@ -17,9 +17,9 @@ global dispatcher
 botversion = 1
 
 def networkinit():
-    # port = input("初始化网络，本地代理端口(默认7891):")
+    # port = input("初始化网络，本地代理端口(默认####):")
     # if (port == 0 or port == "") :
-    #     port = 7891
+    #     port = ####
     # port = int(port)
     port = password.get_port()
     print("OK, setting to", port)
