@@ -6,6 +6,7 @@ import socket
 import socks
 import logging
 import message
+import password
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
@@ -35,7 +36,7 @@ def start(update, context):
 def logtomessage():
     # Enable logging
     logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
     )
     logger = logging.getLogger(__name__)
 
