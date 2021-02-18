@@ -13,13 +13,15 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 global updater
 global dispatcher
 
-
+# Control the version
+botversion = 1
 
 def networkinit():
-    port = input("初始化网络，本地代理端口(默认7891):")
-    if (port == 0 or port == "") :
-        port = 7891
-    port = int(port)
+    # port = input("初始化网络，本地代理端口(默认7891):")
+    # if (port == 0 or port == "") :
+    #     port = 7891
+    # port = int(port)
+    port = password.get_port()
     print("OK, setting to", port)
     socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", port)
     socket.socket = socks.socksocket
@@ -28,6 +30,10 @@ def gettokenfrom(input_A):
     if input_A == "keydown":
         TOKEN = input("tgBot TOKEN：")
         return TOKEN
+    if input_A == "file":
+       TOKEN = password.get_password(botversion)
+       return TOKEN
+
 
 def start(update, context):
     context.bot.send_message(
@@ -48,18 +54,16 @@ def start(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hi!')
 
-
 def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
-
 
 def echo(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     update.message.reply_text(update.message.text)
 
 def main ():
-    TOKEN = gettokenfrom("keydown")
+    TOKEN = gettokenfrom("file")
     bot = telegram.Bot(token=TOKEN)
     print("调试输出，检查机器人是否正常：")
     a = bot.get_me()
