@@ -8,12 +8,19 @@ import logging
 import message
 import password
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    ConversationHandler,
+    CallbackContext
+)
 
 global updater
 global dispatcher
 
-# Control the version
+# Control the version (WTF?)
 botversion = 1
 
 def networkinit():
@@ -23,7 +30,7 @@ def networkinit():
     # port = int(port)
     port = password.get_port()
     print("OK, setting to", port)
-    socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", port)
+    socks.set_default_proxy(socks.SOCKS5, password.get_proxy_ip(), port)
     socket.socket = socks.socksocket
 
 def gettokenfrom(input_A):
@@ -50,17 +57,7 @@ def logtomessage():
 # context. Error handlers also receive the raised TelegramError object in error.
 
 
-def start(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
 
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
-
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
 
 def main ():
     TOKEN = gettokenfrom("file")
@@ -74,11 +71,10 @@ def main ():
     dispatcher = updater.dispatcher
 
     # on different commands - answer in Telegram
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("start", message.start))
+    dispatcher.add_handler(CommandHandler("help", message.help_command))
     # on noncommand i.e message - echo the message on Telegram
-    dispatcher.add_handler(MessageHandler(
-        Filters.text & ~Filters.command, echo))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, message.echo))
     # Start the Bot
     updater.start_polling()
     # Run the bot until you press Ctrl-C or the process receives SIGINT,

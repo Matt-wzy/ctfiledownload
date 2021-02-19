@@ -4,12 +4,26 @@
 import telegram
 import socket
 import socks
+from telegram import Update
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    ConversationHandler,
+    CallbackContext
+)
+
+def start(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /start is issued."""
+    update.message.reply_text('Hi!')
 
 
-def test():
-    pass
+def help_command(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /help is issued."""
+    update.message.reply_text('Help!')
 
 
-def start(update, context):
-    context.bot.send_message(
-        chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+def echo(update: Update, context: CallbackContext) -> None:
+    """Echo the user message."""
+    update.message.reply_text(update.message.text)

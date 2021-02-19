@@ -139,3 +139,4 @@ cython_debug/
 
 #password settings
 password.py
+test_*
